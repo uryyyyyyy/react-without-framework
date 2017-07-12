@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {Counter} from './Counter'
 import {CounterService} from '../services/CounterService'
+import {Subscription} from 'rxjs/Subscription'
 
 interface Props {
   counterService: CounterService
@@ -12,14 +13,16 @@ interface State {
 
 export default class CounterContainer extends React.Component<Props, State> {
 
-  constructor(props: Props) {
-    super(props)
-    this.state = {count: props.counterService.getCount()}
-  }
+  subscription: Subscription
 
   componentWillMount(){
-    this.props.counterService.getObservable()
+    this.setState({count: this.props.counterService.getCount()})
+    this.subscription = this.props.counterService.getObservable()
       .subscribe(value => this.setState({count: value}))
+  }
+
+  componentWillUnmount(){
+    this.subscription.unsubscribe()
   }
 
   increment = (value: number) => {
