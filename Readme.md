@@ -15,13 +15,11 @@ it only depends on React & rxjs
 
 ## build
 
-webpack watches update & re-build automatically
-
 `npm run build`
 
 ## run
 
-`python -m SimpleHTTPServer`
+`npm run server`
 
 ## License
 

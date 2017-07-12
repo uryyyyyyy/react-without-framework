@@ -9,8 +9,10 @@ describe('Counter', () => {
   it('rendering', () => {
     const wrapper = shallow(<Counter
       value={1}
+      isLoading={false}
       increment={actionDummy}
       decrement={actionDummy}
+      asyncIncrement={actionDummy}
     />)
     expect(wrapper.find('p').at(0).prop('children')).toBe('score: 1')
   })
@@ -20,8 +22,10 @@ describe('Counter', () => {
     spyOn(spy, 'increment')
     const wrapper = shallow(<Counter
       value={1}
+      isLoading={false}
       increment={spy.increment}
       decrement={actionDummy}
+      asyncIncrement={actionDummy}
     />)
     wrapper.find('button').at(0).simulate('click')
     expect(spy.increment).toHaveBeenCalledWith(3)

@@ -1,10 +1,11 @@
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
+import httpClientServiceImpl, {HttpClientService} from './HttpClientService'
 
 export class CounterService {
   private count: BehaviorSubject<number>
 
-  constructor() {
+  constructor(private httpClientService: HttpClientService) {
     this.count = new BehaviorSubject(0)
   }
 
@@ -18,6 +19,16 @@ export class CounterService {
     this.count.next(newCount)
   }
 
+  async asyncIncrement() {
+    const result = await this.httpClientService.getRequest<{value: number}>('/api/count')
+    if (result.success) {
+      const newCount = this.count.getValue() + result.success.value
+      this.count.next(newCount)
+    } else {
+      console.error(result!.fail)
+    }
+  }
+
   getObservable(): Observable<number> {
     return this.count.asObservable()
   }
@@ -28,4 +39,4 @@ export class CounterService {
 }
 
 // singleton
-export default new CounterService()
+export default new CounterService(httpClientServiceImpl)

@@ -2,13 +2,15 @@ import {CounterService} from '../CounterService'
 
 describe('CounterService', () => {
 
+  const dummyService: any = {}
+
   it('initialize', () => {
-    const service = new CounterService()
+    const service = new CounterService(dummyService)
     expect(service.getCount()).toBe(0)
   })
 
   it('calling increment changes state', () => {
-    const service = new CounterService()
+    const service = new CounterService(dummyService)
     const results: number[] = []
     service.getObservable().subscribe(value => {
       results.push(value)
@@ -19,7 +21,7 @@ describe('CounterService', () => {
   })
 
   it('call multi API', () => {
-    const service = new CounterService()
+    const service = new CounterService(dummyService)
     const results: number[] = []
     service.getObservable().subscribe(value => {
       results.push(value)
